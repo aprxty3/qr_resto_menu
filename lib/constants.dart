@@ -1,41 +1,46 @@
 import 'package:flutter/material.dart';
 
-var myBackground = Colors.grey[200];
+final titleMenu = [
+  {'titleMenu': 'Semua', 'iconMenu': Icons.all_inclusive},
+  {'titleMenu': 'Promo', 'iconMenu': Icons.local_offer},
+  {'titleMenu': 'Makanan', 'iconMenu': Icons.fastfood},
+  {'titleMenu': 'Minuman', 'iconMenu': Icons.local_drink_outlined},
+  {'titleMenu': 'Snack', 'iconMenu': Icons.icecream},
+  {'titleMenu': 'Dessert', 'iconMenu': Icons.cake},
+  {'titleMenu': 'Lainnya', 'iconMenu': Icons.more_horiz},
+];
 
-var myAppbar = AppBar(
+final myBackground = Colors.grey[200];
+
+final myAppbar = AppBar(
   backgroundColor: Colors.grey[900],
   leading: Builder(
     builder: (context) => IconButton(
       onPressed: () => Scaffold.of(context).openDrawer(),
       icon: const Icon(
-        Icons.south_america_rounded,
+        Icons.menu,
         color: Colors.white,
       ),
     ),
   ),
 );
 
-var myDrawer = Drawer(
+final myDrawer = Drawer(
   backgroundColor: Colors.grey[300],
-  child: const Column(
+  child: Column(
     children: [
-      DrawerHeader(child: Icon(Icons.headphones)),
-      ListTile(
-        title: Text('Home'),
-        leading: Icon(Icons.home),
+      const DrawerHeader(
+        child: Text(
+          'RestoMoe',
+          style: TextStyle(fontSize: 24),
+        ),
       ),
-      ListTile(
-        title: Text('About'),
-        leading: Icon(Icons.info),
+      ...titleMenu.map(
+        (menu) => ListTile(
+          title: Text(menu['titleMenu'].toString()),
+          leading: Icon(menu['iconMenu'] as IconData),
+        ),
       ),
-      ListTile(
-        title: Text('Contact'),
-        leading: Icon(Icons.contact_mail),
-      ),
-      ListTile(
-        title: Text('Exit'),
-        leading: Icon(Icons.exit_to_app),
-      )
     ],
   ),
 );

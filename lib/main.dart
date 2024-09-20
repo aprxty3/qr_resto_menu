@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_resto_menu/responsive/desktop_scaffold.dart';
 import 'package:qr_resto_menu/responsive/mobile_scaffold.dart';
@@ -13,10 +14,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // home: AA(),
-      home: ResponsiveLayout(
+      scrollBehavior: MyCustomScrollBehavior(),
+      home: const ResponsiveLayout(
         mobileScaffold: MobileScaffold(),
         tabletScaffold: TabletScaffold(),
         desktopScaffold: DesktopScaffold(),
@@ -25,21 +26,11 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class AA extends StatefulWidget {
-  const AA({super.key});
-
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
   @override
-  State<AA> createState() => _AAState();
-}
-
-class _AAState extends State<AA> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.red,
-      ),
-      drawer: Drawer(),
-    );
-  }
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+        // etc.
+      };
 }
