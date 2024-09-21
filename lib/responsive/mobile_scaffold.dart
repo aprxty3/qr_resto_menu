@@ -5,6 +5,7 @@ import 'package:qr_resto_menu/widget/product_card.dart';
 import 'package:qr_resto_menu/widget/product_list.dart';
 
 import '../menu_state.dart';
+import '../model/menu_items.dart';
 import '../widget/parent_title_menu.dart';
 
 class MobileScaffold extends StatefulWidget {
@@ -15,10 +16,22 @@ class MobileScaffold extends StatefulWidget {
 }
 
 class _MobileScaffoldState extends State<MobileScaffold> {
+  List<MenuItem>? filteredItems;
+
   @override
   void initState() {
     super.initState();
     Provider.of<MenuState>(context, listen: false).loadMenuItems();
+  }
+
+  void _onMenuSelected(String menuType, List<MenuItem>? items) {
+    setState(() {
+      filteredItems = menuType != 'Semua'
+          ? items
+              ?.where((element) => element.type == menuType.toLowerCase())
+              .toList()
+          : items;
+    });
   }
 
   @override
@@ -40,23 +53,19 @@ class _MobileScaffoldState extends State<MobileScaffold> {
               child: Column(
                 children: [
                   ParentTitleMenu(
-                    onMenuSelected: (menuType) {
-                      menuState.loadMenuItems(menuType: menuType);
-                    },
+                    onMenuSelected: (menuType) =>
+                        _onMenuSelected(menuType, items?.data),
                   ),
                   const SizedBox(height: 16),
-                  if (items?.areHavePicture == true)
-                    ProductCard(
-                      onProductCountChanged: (p0) =>
-                          menuState.updateProductCount(p0),
-                      items: items?.data ?? [],
-                    )
-                  else
-                    ProductList(
-                      onProductCountChanged: (p0) =>
-                          menuState.updateProductCount(p0),
-                      items: items?.data ?? [],
-                    ),
+                  items?.areHavePicture == true
+                      ? ProductCard(
+                          onProductCountChanged: menuState.updateProductCount,
+                          items: filteredItems ?? items?.data ?? [],
+                        )
+                      : ProductList(
+                          onProductCountChanged: menuState.updateProductCount,
+                          items: filteredItems ?? items?.data ?? [],
+                        ),
                 ],
               ),
             ),

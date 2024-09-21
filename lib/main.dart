@@ -24,7 +24,7 @@ Future<void> main() async {
       providers: [
         ChangeNotifierProvider(
             create: (context) => MenuState(Supabase.instance.client)),
-        ChangeNotifierProvider(create: (context) => ProductAdd(0)),
+        ChangeNotifierProvider(create: (context) => ProductAdd()),
       ],
       child: const MyApp(),
     ),

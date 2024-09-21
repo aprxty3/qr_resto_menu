@@ -8,7 +8,8 @@ class ProductList extends StatefulWidget {
   final List<MenuItem> items;
   final Function(int) onProductCountChanged;
 
-  const ProductList({super.key, required this.onProductCountChanged, required this.items});
+  const ProductList(
+      {super.key, required this.onProductCountChanged, required this.items});
 
   @override
   State<ProductList> createState() => _ProductListState();
@@ -18,7 +19,7 @@ class _ProductListState extends State<ProductList> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => ProductAdd(widget.items.length),
+      create: (_) => ProductAdd(),
       child: Consumer<ProductAdd>(
         builder: (context, productCount, child) {
           return Expanded(
@@ -44,7 +45,9 @@ class _ProductListState extends State<ProductList> {
                         },
                         icon: const Icon(Icons.remove),
                       ),
-                      Text(productCount.totals[index].toString()),
+                      Text(productCount
+                          .getTotalForProduct(widget.items[index].id)
+                          .toString()),
                       IconButton(
                         onPressed: () {
                           productCount.incrementTotal(index);

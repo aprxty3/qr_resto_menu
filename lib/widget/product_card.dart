@@ -19,7 +19,6 @@ class ProductCard extends StatefulWidget {
 class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
-    //TODO : di improve nanti untuk handle flexibilitas
     int crossAxisCount = 2;
     if (MediaQuery.of(context).size.width < 600) {
       crossAxisCount = 2;
@@ -32,7 +31,7 @@ class _ProductCardState extends State<ProductCard> {
     }
 
     return ChangeNotifierProvider(
-      create: (_) => ProductAdd(widget.items.length),
+      create: (_) => ProductAdd(),
       child: Consumer<ProductAdd>(
         builder: (context, productCount, child) {
           return Expanded(
@@ -44,6 +43,7 @@ class _ProductCardState extends State<ProductCard> {
                 mainAxisSpacing: 6,
               ),
               itemBuilder: (context, index) {
+                final item = widget.items[index];
                 return Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -61,7 +61,7 @@ class _ProductCardState extends State<ProductCard> {
                             topRight: Radius.circular(8),
                           ),
                           image: DecorationImage(
-                            image: NetworkImage(widget.items[index].imgurl),
+                            image: NetworkImage(item.imgurl),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -74,9 +74,9 @@ class _ProductCardState extends State<ProductCard> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(widget.items[index].name),
+                                Text(item.name),
                                 const SizedBox(height: 4),
-                                Text(widget.items[index].price.toString()),
+                                Text(item.price.toString()),
                               ],
                             ),
                             Row(
@@ -85,22 +85,22 @@ class _ProductCardState extends State<ProductCard> {
                                   onPressed: () {
                                     Provider.of<MenuState>(context,
                                             listen: false)
-                                        .updateProduct(
-                                            widget.items[index].id, -1);
-                                    productCount.decrementTotal(index);
+                                        .updateProduct(item.id, -1);
+                                    productCount.decrementTotal(item.id);
                                     widget.onProductCountChanged(
                                         productCount.getTotalCount());
                                   },
                                   icon: const Icon(Icons.remove),
                                 ),
-                                Text(productCount.totals[index].toString()),
+                                Text(productCount
+                                    .getTotalForProduct(item.id)
+                                    .toString()),
                                 IconButton(
                                   onPressed: () {
                                     Provider.of<MenuState>(context,
                                             listen: false)
-                                        .updateProduct(
-                                            widget.items[index].id, 1);
-                                    productCount.incrementTotal(index);
+                                        .updateProduct(item.id, 1);
+                                    productCount.incrementTotal(item.id);
                                     widget.onProductCountChanged(
                                         productCount.getTotalCount());
                                   },
