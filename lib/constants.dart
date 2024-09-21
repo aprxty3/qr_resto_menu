@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+const supabaseUrl = 'https://jtxaomopwwaluvrgtajd.supabase.co';
+const supabaseKey =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp0eGFvbW9wd3dhbHV2cmd0YWpkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjY5MDEwMDAsImV4cCI6MjA0MjQ3NzAwMH0.TbQ7pTFyMNDu2-TjSjZL73Ie8NyqMk2k0N00JJ-i3IM';
+
 final titleMenu = [
   {'titleMenu': 'Semua', 'iconMenu': Icons.all_inclusive},
   {'titleMenu': 'Promo', 'iconMenu': Icons.local_offer},
