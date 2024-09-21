@@ -43,3 +43,5 @@ app.*.map.json
 /android/app/release
 
 /lib/constants.dart
+/lib/menu_state.dart
+/lib/product_add.dart

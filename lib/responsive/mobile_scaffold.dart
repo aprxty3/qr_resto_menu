@@ -1,10 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_resto_menu/constants.dart';
-import 'package:qr_resto_menu/main.dart';
-import 'package:qr_resto_menu/model/menu_items.dart';
+import 'package:qr_resto_menu/widget/product_card.dart';
 import 'package:qr_resto_menu/widget/product_list.dart';
+
+import '../menu_state.dart';
 
 class MobileScaffold extends StatefulWidget {
   const MobileScaffold({super.key});
@@ -14,73 +14,59 @@ class MobileScaffold extends StatefulWidget {
 }
 
 class _MobileScaffoldState extends State<MobileScaffold> {
-  int productCount = 0;
-  var _menuItems = MenuItems();
-
-  void updateProductCount(int count) {
-    setState(() {
-      log('Product count: $count');
-      productCount = count;
-    });
-  }
-
-  Future<void> loadMenuItems({String? menuType}) async {
-    final data = await supabase.from('menu_items').select();
-
-    bool areHavePicture =
-        data.any((item) => item['imgurl'] != null && item['imgurl'].isNotEmpty);
-
-    MenuItems menuItems = MenuItems(
-      result: Result(
-        areHavePicture: areHavePicture,
-        data: List<Menu>.from(data.map((item) => Menu.fromJson(item))),
-      ),
-    );
-
-    _menuItems = menuItems;
-
-    log('MenuItems: ${_menuItems.result?.toJson()}');
-  }
-
   @override
   void initState() {
     super.initState();
-    loadMenuItems();
+    Provider.of<MenuState>(context, listen: false).loadMenuItems();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: myBackground,
-      appBar: myAppbar,
-      drawer: myDrawer,
-      floatingActionButton: floatingActionButton(),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 50,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: titleMenu
-                      .map((menuName) => categoryMenu(
-                          menuName: menuName['titleMenu'].toString()))
-                      .toList(),
-                ),
+    return Consumer<MenuState>(
+      builder: (context, menuState, child) {
+        final items = menuState.menuItems.result;
+
+        return Visibility(
+          visible: items != null,
+          replacement: const Center(child: CircularProgressIndicator()),
+          child: Scaffold(
+            backgroundColor: myBackground,
+            appBar: myAppbar,
+            drawer: myDrawer,
+            floatingActionButton: floatingActionButton(menuState),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 50,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: titleMenu
+                            .map((menuName) => categoryMenu(
+                                menuName: menuName['titleMenu'].toString()))
+                            .toList(),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  if (items?.areHavePicture == true)
+                    ProductCard(
+                      onProductCountChanged: (p0) =>
+                          menuState.updateProductCount(p0),
+                    )
+                  else
+                    ProductList(
+                      onProductCountChanged: (p0) =>
+                          menuState.updateProductCount(p0),
+                    ),
+                ],
               ),
             ),
-            const SizedBox(height: 16),
-            // if (_menuItems.result?.areHavePicture == true)
-            //   Container()
-            // else
-              ProductList(
-                onProductCountChanged: (p0) => updateProductCount(p0),
-              ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -105,16 +91,6 @@ class _MobileScaffoldState extends State<MobileScaffold> {
             color: Colors.white,
           ),
         ),
-      ),
-    );
-  }
-
-  Widget floatingActionButton() {
-    return Badge(
-      label: Text('$productCount'),
-      child: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.shopping_cart),
       ),
     );
   }

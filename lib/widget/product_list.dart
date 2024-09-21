@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../product_add.dart';
+
 class ProductList extends StatefulWidget {
   final Function(int) onProductCountChanged;
 
@@ -9,25 +11,8 @@ class ProductList extends StatefulWidget {
   State<ProductList> createState() => _ProductListState();
 }
 
-class _ProductListState extends State<ProductList> {
-  List<int> totals = List<int>.filled(20, 0);
-
-  void _incrementTotal(int index) {
-    setState(() {
-      totals[index]++;
-      widget.onProductCountChanged(totals.reduce((a, b) => a + b));
-    });
-  }
-
-  void _decrementTotal(int index) {
-    setState(() {
-      if (totals[index] > 0) {
-        totals[index]--;
-        widget.onProductCountChanged(totals.reduce((a, b) => a + b));
-      }
-    });
-  }
-
+class _ProductListState extends State<ProductList>
+    with ProductCountMixin<ProductList> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -46,12 +31,12 @@ class _ProductListState extends State<ProductList> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () => _decrementTotal(index),
+                  onPressed: () => decrementTotal(index),
                   icon: const Icon(Icons.remove),
                 ),
                 Text(totals[index].toString()),
                 IconButton(
-                  onPressed: () => _incrementTotal(index),
+                  onPressed: () => incrementTotal(index),
                   icon: const Icon(Icons.add),
                 ),
               ],
