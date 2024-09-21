@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 
 class ParentTitleMenu extends StatefulWidget {
-  const ParentTitleMenu({super.key});
+
+  final Function(String) onMenuSelected;
+  const ParentTitleMenu({super.key, required this.onMenuSelected});
 
   @override
   State<ParentTitleMenu> createState() => _ParentTitleMenuState();
@@ -19,7 +21,9 @@ class _ParentTitleMenuState extends State<ParentTitleMenu> {
         child: Row(
           children: titleMenu
               .map((menuName) =>
-                  categoryMenu(menuName: menuName['titleMenu'].toString()))
+                  GestureDetector(
+                    onTap: () => widget.onMenuSelected(menuName['titleMenu'].toString()),
+                      child: categoryMenu(menuName: menuName['titleMenu'].toString())))
               .toList(),
         ),
       ),

@@ -44,9 +44,7 @@ class Result {
 
   Map<String, dynamic> toJson() => {
         "areHavePicture": areHavePicture,
-        "data": data == null
-            ? []
-            : List<dynamic>.from(data!.map((x) => x.toJson())),
+        "data":List<dynamic>.from(data.map((x) => x.toJson())),
       };
 }
 

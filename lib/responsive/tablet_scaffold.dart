@@ -39,7 +39,11 @@ class _TabletScaffoldState extends State<TabletScaffold> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
               child: Column(
                 children: [
-                  const ParentTitleMenu(),
+                  ParentTitleMenu(
+                    onMenuSelected: (menuType) {
+                      menuState.loadMenuItems(menuType: menuType);
+                    },
+                  ),
                   const SizedBox(height: 16),
                   if (items?.areHavePicture == true)
                     ProductCard(
