@@ -22,7 +22,7 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
           Expanded(
             child: Container(
               color: Colors.white,
-              child: Center(
+              child: const Center(
                 child: Text('Desktop Scaffold'),
               ),
             ),

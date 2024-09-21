@@ -1,11 +1,20 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_resto_menu/constants.dart';
 import 'package:qr_resto_menu/responsive/desktop_scaffold.dart';
 import 'package:qr_resto_menu/responsive/mobile_scaffold.dart';
 import 'package:qr_resto_menu/responsive/responsive_layour.dart';
 import 'package:qr_resto_menu/responsive/tablet_scaffold.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
+final supabase = Supabase.instance.client;
+
+Future<void> main() async {
+  await Supabase.initialize(
+    url: supabaseUrl,
+    anonKey: supabaseKey,
+  );
+
   runApp(const MyApp());
 }
 
