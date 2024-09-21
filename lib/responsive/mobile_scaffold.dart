@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:qr_resto_menu/constants.dart';
+import 'package:qr_resto_menu/main.dart';
+import 'package:qr_resto_menu/model/menu_items.dart';
 import 'package:qr_resto_menu/widget/product_list.dart';
 
 class MobileScaffold extends StatefulWidget {
@@ -13,12 +15,37 @@ class MobileScaffold extends StatefulWidget {
 
 class _MobileScaffoldState extends State<MobileScaffold> {
   int productCount = 0;
+  var _menuItems = MenuItems();
 
   void updateProductCount(int count) {
     setState(() {
       log('Product count: $count');
       productCount = count;
     });
+  }
+
+  Future<void> loadMenuItems({String? menuType}) async {
+    final data = await supabase.from('menu_items').select();
+
+    bool areHavePicture =
+        data.any((item) => item['imgurl'] != null && item['imgurl'].isNotEmpty);
+
+    MenuItems menuItems = MenuItems(
+      result: Result(
+        areHavePicture: areHavePicture,
+        data: List<Menu>.from(data.map((item) => Menu.fromJson(item))),
+      ),
+    );
+
+    _menuItems = menuItems;
+
+    log('MenuItems: ${_menuItems.result?.toJson()}');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadMenuItems();
   }
 
   @override
@@ -45,9 +72,12 @@ class _MobileScaffoldState extends State<MobileScaffold> {
               ),
             ),
             const SizedBox(height: 16),
-            ProductList(
-              onProductCountChanged: (p0) => updateProductCount(p0),
-            ),
+            // if (_menuItems.result?.areHavePicture == true)
+            //   Container()
+            // else
+              ProductList(
+                onProductCountChanged: (p0) => updateProductCount(p0),
+              ),
           ],
         ),
       ),
@@ -82,10 +112,6 @@ class _MobileScaffoldState extends State<MobileScaffold> {
   Widget floatingActionButton() {
     return Badge(
       label: Text('$productCount'),
-      // badgeContent: Text(
-      //   _productCount.toString(),
-      //   style: const TextStyle(color: Colors.white),
-      // ),
       child: FloatingActionButton(
         onPressed: () {},
         child: const Icon(Icons.shopping_cart),
