@@ -50,7 +50,7 @@ class _ProductCardState extends State<ProductCard> {
                     children: [
                       Container(
                         width: double.infinity,
-                        height: MediaQuery.of(context).size.height * .17,
+                        height: MediaQuery.of(context).size.height * .18,
                         decoration: const BoxDecoration(
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(8),

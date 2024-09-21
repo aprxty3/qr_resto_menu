@@ -5,6 +5,7 @@ import 'package:qr_resto_menu/widget/product_card.dart';
 import 'package:qr_resto_menu/widget/product_list.dart';
 
 import '../menu_state.dart';
+import '../widget/parent_title_menu.dart';
 
 class TabletScaffold extends StatefulWidget {
   const TabletScaffold({super.key});
@@ -38,18 +39,7 @@ class _TabletScaffoldState extends State<TabletScaffold> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
               child: Column(
                 children: [
-                  SizedBox(
-                    height: 50,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: titleMenu
-                            .map((menuName) => categoryMenu(
-                                menuName: menuName['titleMenu'].toString()))
-                            .toList(),
-                      ),
-                    ),
-                  ),
+                  const ParentTitleMenu(),
                   const SizedBox(height: 16),
                   if (items?.areHavePicture == true)
                     ProductCard(
@@ -65,31 +55,6 @@ class _TabletScaffoldState extends State<TabletScaffold> {
           ),
         );
       },
-    );
-  }
-
-  Widget categoryMenu({required String menuName}) {
-    return Container(
-      width: 120,
-      margin: const EdgeInsets.only(right: 8),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 4,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Colors.grey[600],
-      ),
-      child: Center(
-        child: Text(
-          menuName,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: Colors.white,
-          ),
-        ),
-      ),
     );
   }
 }
