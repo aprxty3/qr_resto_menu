@@ -11,9 +11,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'menu_state.dart';
 
-final supabase = Supabase.instance.client;
-
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   await Supabase.initialize(
     url: supabaseUrl,
     anonKey: supabaseKey,
@@ -22,7 +22,8 @@ Future<void> main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => MenuState()),
+        ChangeNotifierProvider(
+            create: (context) => MenuState(Supabase.instance.client)),
         ChangeNotifierProvider(create: (context) => ProductAdd(0)),
       ],
       child: const MyApp(),

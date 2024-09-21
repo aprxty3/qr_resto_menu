@@ -85,7 +85,8 @@ class _ProductCardState extends State<ProductCard> {
                                   onPressed: () {
                                     Provider.of<MenuState>(context,
                                             listen: false)
-                                        .removeProduct(widget.items[index].id);
+                                        .updateProduct(
+                                            widget.items[index].id, -1);
                                     productCount.decrementTotal(index);
                                     widget.onProductCountChanged(
                                         productCount.getTotalCount());
@@ -97,7 +98,8 @@ class _ProductCardState extends State<ProductCard> {
                                   onPressed: () {
                                     Provider.of<MenuState>(context,
                                             listen: false)
-                                        .addProduct(widget.items[index].id);
+                                        .updateProduct(
+                                            widget.items[index].id, 1);
                                     productCount.incrementTotal(index);
                                     widget.onProductCountChanged(
                                         productCount.getTotalCount());
