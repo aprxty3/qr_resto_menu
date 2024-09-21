@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../model/menu_items.dart';
 import '../product_add.dart';
 
 class ProductList extends StatefulWidget {
+  final List<MenuItem> items;
   final Function(int) onProductCountChanged;
 
-  const ProductList({super.key, required this.onProductCountChanged});
+  const ProductList({super.key, required this.onProductCountChanged, required this.items});
 
   @override
   State<ProductList> createState() => _ProductListState();
@@ -16,8 +18,8 @@ class _ProductListState extends State<ProductList> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => ProductCount(),
-      child: Consumer<ProductCount>(
+      create: (_) => ProductAdd(widget.items.length),
+      child: Consumer<ProductAdd>(
         builder: (context, productCount, child) {
           return Expanded(
             child: ListView.builder(

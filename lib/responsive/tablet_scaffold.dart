@@ -34,7 +34,7 @@ class _TabletScaffoldState extends State<TabletScaffold> {
             backgroundColor: myBackground,
             appBar: myAppbar,
             drawer: myDrawer,
-            floatingActionButton: floatingActionButton(menuState),
+            floatingActionButton: floatingActionButton(menuState, context),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
               child: Column(
@@ -44,10 +44,12 @@ class _TabletScaffoldState extends State<TabletScaffold> {
                   if (items?.areHavePicture == true)
                     ProductCard(
                       onProductCountChanged: menuState.updateProductCount,
+                      items: items?.data ?? [],
                     )
                   else
                     ProductList(
                       onProductCountChanged: menuState.updateProductCount,
+                      items: items?.data ?? [],
                     ),
                 ],
               ),

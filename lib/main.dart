@@ -23,7 +23,7 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => MenuState()),
-        ChangeNotifierProvider(create: (context) => ProductCount()),
+        ChangeNotifierProvider(create: (context) => ProductAdd(0)),
       ],
       child: const MyApp(),
     ),

@@ -34,7 +34,7 @@ class _MobileScaffoldState extends State<MobileScaffold> {
             backgroundColor: myBackground,
             appBar: myAppbar,
             drawer: myDrawer,
-            floatingActionButton: floatingActionButton(menuState),
+            floatingActionButton: floatingActionButton(menuState, context),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
               child: Column(
@@ -45,11 +45,13 @@ class _MobileScaffoldState extends State<MobileScaffold> {
                     ProductCard(
                       onProductCountChanged: (p0) =>
                           menuState.updateProductCount(p0),
+                      items: items?.data ?? [],
                     )
                   else
                     ProductList(
                       onProductCountChanged: (p0) =>
                           menuState.updateProductCount(p0),
+                      items: items?.data ?? [],
                     ),
                 ],
               ),

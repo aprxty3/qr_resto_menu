@@ -22,12 +22,12 @@ class MenuItems {
 }
 
 class Result {
-  bool? areHavePicture;
-  List<Menu>? data;
+  final bool areHavePicture;
+  final List<MenuItem> data;
 
   Result({
-    this.areHavePicture,
-    this.data,
+    required this.areHavePicture,
+    required this.data,
   });
 
   factory Result.fromRawJson(String str) => Result.fromJson(json.decode(str));
@@ -38,7 +38,8 @@ class Result {
         areHavePicture: json["areHavePicture"],
         data: json["data"] == null
             ? []
-            : List<Menu>.from(json["data"]!.map((x) => Menu.fromJson(x))),
+            : List<MenuItem>.from(
+                json["data"]!.map((x) => MenuItem.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -49,26 +50,27 @@ class Result {
       };
 }
 
-class Menu {
-  int? id;
-  String? type;
-  String? name;
-  int? price;
-  String? imgurl;
+class MenuItem {
+  final int id;
+  final String type;
+  final String name;
+  final int price;
+  final String imgurl;
 
-  Menu({
-    this.id,
-    this.type,
-    this.name,
-    this.price,
-    this.imgurl,
+  MenuItem({
+    required this.id,
+    required this.type,
+    required this.name,
+    required this.price,
+    required this.imgurl,
   });
 
-  factory Menu.fromRawJson(String str) => Menu.fromJson(json.decode(str));
+  factory MenuItem.fromRawJson(String str) =>
+      MenuItem.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Menu.fromJson(Map<String, dynamic> json) => Menu(
+  factory MenuItem.fromJson(Map<String, dynamic> json) => MenuItem(
         id: json["id"],
         type: json["type"],
         name: json["name"],

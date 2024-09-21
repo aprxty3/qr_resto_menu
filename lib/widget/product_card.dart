@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_resto_menu/model/menu_items.dart';
 import 'package:qr_resto_menu/product_add.dart';
 
+import '../menu_state.dart';
+
 class ProductCard extends StatefulWidget {
+  final List<MenuItem> items;
   final Function(int) onProductCountChanged;
 
-  const ProductCard({super.key, required this.onProductCountChanged});
+  const ProductCard(
+      {super.key, required this.onProductCountChanged, required this.items});
 
   @override
   State<ProductCard> createState() => _ProductCardState();
@@ -14,7 +19,6 @@ class ProductCard extends StatefulWidget {
 class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
-
     //TODO : di improve nanti untuk handle flexibilitas
     int crossAxisCount = 2;
     if (MediaQuery.of(context).size.width < 600) {
@@ -28,12 +32,12 @@ class _ProductCardState extends State<ProductCard> {
     }
 
     return ChangeNotifierProvider(
-      create: (_) => ProductCount(),
-      child: Consumer<ProductCount>(
+      create: (_) => ProductAdd(widget.items.length),
+      child: Consumer<ProductAdd>(
         builder: (context, productCount, child) {
           return Expanded(
             child: GridView.builder(
-              itemCount: 20,
+              itemCount: widget.items.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: crossAxisCount,
                 crossAxisSpacing: 6,
@@ -51,13 +55,13 @@ class _ProductCardState extends State<ProductCard> {
                       Container(
                         width: double.infinity,
                         height: MediaQuery.of(context).size.height * .18,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(8),
                             topRight: Radius.circular(8),
                           ),
                           image: DecorationImage(
-                            image: NetworkImage('https://picsum.photos/200'),
+                            image: NetworkImage(widget.items[index].imgurl),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -70,15 +74,18 @@ class _ProductCardState extends State<ProductCard> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Nama Menu $index'),
+                                Text(widget.items[index].name),
                                 const SizedBox(height: 4),
-                                const Text('Rp 10.000'),
+                                Text(widget.items[index].price.toString()),
                               ],
                             ),
                             Row(
                               children: [
                                 IconButton(
                                   onPressed: () {
+                                    Provider.of<MenuState>(context,
+                                            listen: false)
+                                        .removeProduct(widget.items[index].id);
                                     productCount.decrementTotal(index);
                                     widget.onProductCountChanged(
                                         productCount.getTotalCount());
@@ -88,6 +95,9 @@ class _ProductCardState extends State<ProductCard> {
                                 Text(productCount.totals[index].toString()),
                                 IconButton(
                                   onPressed: () {
+                                    Provider.of<MenuState>(context,
+                                            listen: false)
+                                        .addProduct(widget.items[index].id);
                                     productCount.incrementTotal(index);
                                     widget.onProductCountChanged(
                                         productCount.getTotalCount());
