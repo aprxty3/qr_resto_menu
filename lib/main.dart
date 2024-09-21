@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_resto_menu/constants.dart';
+import 'package:qr_resto_menu/product_add.dart';
 import 'package:qr_resto_menu/responsive/desktop_scaffold.dart';
 import 'package:qr_resto_menu/responsive/mobile_scaffold.dart';
 import 'package:qr_resto_menu/responsive/responsive_layour.dart';
@@ -19,8 +20,11 @@ Future<void> main() async {
   );
 
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => MenuState(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => MenuState()),
+        ChangeNotifierProvider(create: (context) => ProductCount()),
+      ],
       child: const MyApp(),
     ),
   );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../product_add.dart';
 
@@ -11,35 +12,49 @@ class ProductList extends StatefulWidget {
   State<ProductList> createState() => _ProductListState();
 }
 
-class _ProductListState extends State<ProductList>
-    with ProductCountMixin<ProductList> {
+class _ProductListState extends State<ProductList> {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: 20,
-        itemBuilder: (context, index) {
-          return Card(
-            margin: const EdgeInsets.only(bottom: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: ListTile(
-                    title: Text('Nama Menu $index'),
-                    subtitle: const Text('Rp 10.000'),
+    return ChangeNotifierProvider(
+      create: (_) => ProductCount(),
+      child: Consumer<ProductCount>(
+        builder: (context, productCount, child) {
+          return Expanded(
+            child: ListView.builder(
+              itemCount: 20,
+              itemBuilder: (context, index) {
+                return Card(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: ListTile(
+                          title: Text('Nama Menu $index'),
+                          subtitle: const Text('Rp 10.000'),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          productCount.decrementTotal(index);
+                          widget.onProductCountChanged(
+                              productCount.getTotalCount());
+                        },
+                        icon: const Icon(Icons.remove),
+                      ),
+                      Text(productCount.totals[index].toString()),
+                      IconButton(
+                        onPressed: () {
+                          productCount.incrementTotal(index);
+                          widget.onProductCountChanged(
+                              productCount.getTotalCount());
+                        },
+                        icon: const Icon(Icons.add),
+                      ),
+                    ],
                   ),
-                ),
-                IconButton(
-                  onPressed: () => decrementTotal(index),
-                  icon: const Icon(Icons.remove),
-                ),
-                Text(totals[index].toString()),
-                IconButton(
-                  onPressed: () => incrementTotal(index),
-                  icon: const Icon(Icons.add),
-                ),
-              ],
+                );
+              },
             ),
           );
         },
