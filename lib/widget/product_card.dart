@@ -34,96 +34,105 @@ class _ProductCardState extends State<ProductCard> {
       create: (_) => ProductAdd(),
       child: Consumer<ProductAdd>(
         builder: (context, productCount, child) {
-          return Expanded(
-            child: Column(
-              children: [
-                Expanded(
-                  child: GridView.builder(
-                    itemCount: widget.items.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: crossAxisCount,
-                      crossAxisSpacing: 6,
-                      mainAxisSpacing: 6,
+          return Visibility(
+            visible: widget.items.isNotEmpty,
+            replacement: const Center(
+              child: Text('Produk Sedang Kosong'),
+            ),
+            child: Expanded(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: GridView.builder(
+                      itemCount: widget.items.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: crossAxisCount,
+                        crossAxisSpacing: 6,
+                        mainAxisSpacing: 6,
+                      ),
+                      itemBuilder: (context, index) {
+                        final item = widget.items[index];
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                width: double.infinity,
+                                height:
+                                    MediaQuery.of(context).size.height * .087,
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(8),
+                                    topRight: Radius.circular(8),
+                                  ),
+                                  image: DecorationImage(
+                                    image: NetworkImage(item.imgurl),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(item.name),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(item.price.toString()),
+                                        Row(
+                                          children: [
+                                            IconButton(
+                                              onPressed: () {
+                                                Provider.of<MenuState>(context,
+                                                        listen: false)
+                                                    .updateProduct(item.id, -1);
+                                                productCount
+                                                    .decrementTotal(item.id);
+                                                widget.onProductCountChanged(
+                                                    productCount
+                                                        .getTotalCount());
+                                              },
+                                              icon: const Icon(Icons.remove),
+                                            ),
+                                            Text(productCount
+                                                .getTotalForProduct(item.id)
+                                                .toString()),
+                                            IconButton(
+                                              onPressed: () {
+                                                Provider.of<MenuState>(context,
+                                                        listen: false)
+                                                    .updateProduct(item.id, 1);
+                                                productCount
+                                                    .incrementTotal(item.id);
+                                                widget.onProductCountChanged(
+                                                    productCount
+                                                        .getTotalCount());
+                                              },
+                                              icon: const Icon(Icons.add),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
-                    itemBuilder: (context, index) {
-                      final item = widget.items[index];
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              width: double.infinity,
-                              height: MediaQuery.of(context).size.height * .11,
-                              decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(8),
-                                  topRight: Radius.circular(8),
-                                ),
-                                image: DecorationImage(
-                                  image: NetworkImage(item.imgurl),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(item.name),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(item.price.toString()),
-                                      Row(
-                                        children: [
-                                          IconButton(
-                                            onPressed: () {
-                                              Provider.of<MenuState>(context,
-                                                      listen: false)
-                                                  .updateProduct(item.id, -1);
-                                              productCount
-                                                  .decrementTotal(item.id);
-                                              widget.onProductCountChanged(
-                                                  productCount.getTotalCount());
-                                            },
-                                            icon: const Icon(Icons.remove),
-                                          ),
-                                          Text(productCount
-                                              .getTotalForProduct(item.id)
-                                              .toString()),
-                                          IconButton(
-                                            onPressed: () {
-                                              Provider.of<MenuState>(context,
-                                                      listen: false)
-                                                  .updateProduct(item.id, 1);
-                                              productCount
-                                                  .incrementTotal(item.id);
-                                              widget.onProductCountChanged(
-                                                  productCount.getTotalCount());
-                                            },
-                                            icon: const Icon(Icons.add),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
                   ),
-                ),
-                const SizedBox(height: 50)
-              ],
+                  const SizedBox(height: 50)
+                ],
+              ),
             ),
           );
         },

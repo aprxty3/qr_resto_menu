@@ -74,8 +74,8 @@ Widget floatingActionButton(MenuState menuState, BuildContext context) {
     final whatsappUrl =
         'https://wa.me/6285156454374?text=${Uri.encodeComponent(message)}';
 
-    if (await canLaunch(whatsappUrl)) {
-      await launch(whatsappUrl);
+    if (await canLaunchUrl(Uri.parse(whatsappUrl))) {
+      await launchUrl(Uri.parse(whatsappUrl));
     } else {
       throw 'Could not launch $whatsappUrl';
     }

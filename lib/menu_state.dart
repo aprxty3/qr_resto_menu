@@ -50,7 +50,6 @@ class MenuState extends ChangeNotifier {
 
     _menuItems = menuItems;
 
-    log('Menu items: ${_menuItems.result?.toJson()}');
     notifyListeners();
   }
 

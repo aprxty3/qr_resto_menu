@@ -12,7 +12,7 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text('Cooming Soon'),
+        child: Text('Saat ini hanya tersedia untuk Tablet dan Mobile'),
       ),
       // backgroundColor: myBackground,
       // appBar: AppBar(
