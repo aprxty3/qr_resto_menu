@@ -57,7 +57,7 @@ class _ProductCardState extends State<ProductCard> {
                           children: [
                             Container(
                               width: double.infinity,
-                              height: MediaQuery.of(context).size.height * .18,
+                              height: MediaQuery.of(context).size.height * .11,
                               decoration: BoxDecoration(
                                 borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(8),
@@ -70,47 +70,47 @@ class _ProductCardState extends State<ProductCard> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                              padding: const EdgeInsets.all(8),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(item.name),
-                                      const SizedBox(height: 4),
-                                      Text(item.price.toString()),
-                                    ],
-                                  ),
+                                  Text(item.name),
                                   Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      IconButton(
-                                        onPressed: () {
-                                          Provider.of<MenuState>(context,
-                                                  listen: false)
-                                              .updateProduct(item.id, -1);
-                                          productCount.decrementTotal(item.id);
-                                          widget.onProductCountChanged(
-                                              productCount.getTotalCount());
-                                        },
-                                        icon: const Icon(Icons.remove),
-                                      ),
-                                      Text(productCount
-                                          .getTotalForProduct(item.id)
-                                          .toString()),
-                                      IconButton(
-                                        onPressed: () {
-                                          Provider.of<MenuState>(context,
-                                                  listen: false)
-                                              .updateProduct(item.id, 1);
-                                          productCount.incrementTotal(item.id);
-                                          widget.onProductCountChanged(
-                                              productCount.getTotalCount());
-                                        },
-                                        icon: const Icon(Icons.add),
-                                      ),
+                                      Text(item.price.toString()),
+                                      Row(
+                                        children: [
+                                          IconButton(
+                                            onPressed: () {
+                                              Provider.of<MenuState>(context,
+                                                      listen: false)
+                                                  .updateProduct(item.id, -1);
+                                              productCount
+                                                  .decrementTotal(item.id);
+                                              widget.onProductCountChanged(
+                                                  productCount.getTotalCount());
+                                            },
+                                            icon: const Icon(Icons.remove),
+                                          ),
+                                          Text(productCount
+                                              .getTotalForProduct(item.id)
+                                              .toString()),
+                                          IconButton(
+                                            onPressed: () {
+                                              Provider.of<MenuState>(context,
+                                                      listen: false)
+                                                  .updateProduct(item.id, 1);
+                                              productCount
+                                                  .incrementTotal(item.id);
+                                              widget.onProductCountChanged(
+                                                  productCount.getTotalCount());
+                                            },
+                                            icon: const Icon(Icons.add),
+                                          ),
+                                        ],
+                                      )
                                     ],
                                   )
                                 ],
