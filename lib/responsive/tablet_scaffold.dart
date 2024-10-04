@@ -11,7 +11,9 @@ import '../model/menu_items.dart';
 import '../widget/parent_title_menu.dart';
 
 class TabletScaffold extends StatefulWidget {
-  const TabletScaffold({super.key});
+  final String typeList;
+
+  const TabletScaffold({super.key, required this.typeList});
 
   @override
   State<TabletScaffold> createState() => _TabletScaffoldState();
@@ -60,7 +62,7 @@ class _TabletScaffoldState extends State<TabletScaffold> {
                         _onMenuSelected(menuType, items?.data),
                   ),
                   const SizedBox(height: 16),
-                  items?.areHavePicture == true
+                  widget.typeList == 'image'
                       ? ProductCard(
                           onProductCountChanged: menuState.updateProductCount,
                           items: filteredItems ?? items?.data ?? [],

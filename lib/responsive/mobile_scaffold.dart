@@ -9,7 +9,8 @@ import '../model/menu_items.dart';
 import '../widget/parent_title_menu.dart';
 
 class MobileScaffold extends StatefulWidget {
-  const MobileScaffold({super.key});
+  final String typeList;
+  const MobileScaffold({super.key, required this.typeList});
 
   @override
   State<MobileScaffold> createState() => _MobileScaffoldState();
@@ -57,7 +58,7 @@ class _MobileScaffoldState extends State<MobileScaffold> {
                         _onMenuSelected(menuType, items?.data),
                   ),
                   const SizedBox(height: 16),
-                  items?.areHavePicture == true
+                  widget.typeList == 'image'
                       ? ProductCard(
                           onProductCountChanged: menuState.updateProductCount,
                           items: filteredItems ?? items?.data ?? [],

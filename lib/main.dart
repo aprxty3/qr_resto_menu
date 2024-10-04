@@ -2,11 +2,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_resto_menu/constants.dart';
+import 'package:qr_resto_menu/page/menu_list.dart';
+import 'package:qr_resto_menu/page/menu_list_image.dart';
 import 'package:qr_resto_menu/product_add.dart';
-import 'package:qr_resto_menu/responsive/desktop_scaffold.dart';
-import 'package:qr_resto_menu/responsive/mobile_scaffold.dart';
-import 'package:qr_resto_menu/responsive/responsive_layour.dart';
-import 'package:qr_resto_menu/responsive/tablet_scaffold.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'menu_state.dart';
@@ -40,11 +38,26 @@ class MyApp extends StatelessWidget {
       title: 'Restomue',
       debugShowCheckedModeBanner: false,
       scrollBehavior: MyCustomScrollBehavior(),
-      home: const ResponsiveLayout(
-        mobileScaffold: MobileScaffold(),
-        tabletScaffold: TabletScaffold(),
-        desktopScaffold: DesktopScaffold(),
-      ),
+      initialRoute: '/',
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case '/':
+            return MaterialPageRoute(
+              builder: (context) => const ChoiceMethod(),
+            );
+          case '/menu-list':
+            final argument = settings.arguments as String;
+            return MaterialPageRoute(
+              builder: (context) => MenuList(argument: argument),
+            );
+          case '/menu-list-image':
+            final argument = settings.arguments as String;
+            return MaterialPageRoute(
+              builder: (context) => MenuListImage(argument: argument),
+            );
+        }
+        return null;
+      },
     );
   }
 }
@@ -57,4 +70,30 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
         PointerDeviceKind.stylus,
         PointerDeviceKind.trackpad,
       };
+}
+
+class ChoiceMethod extends StatelessWidget {
+  const ChoiceMethod({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ElevatedButton(
+            onPressed: () => Navigator.pushNamed(context, '/menu-list-image',
+                arguments: 'image'),
+            child: const Text('Go To Menu with Image'),
+          ),
+          const SizedBox(height: 24),
+          ElevatedButton(
+            onPressed: () =>
+                Navigator.pushNamed(context, '/menu-list', arguments: 'list'),
+            child: const Text('Go To Menu with List'),
+          ),
+        ],
+      ),
+    );
+  }
 }
