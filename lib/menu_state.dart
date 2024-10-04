@@ -13,6 +13,15 @@ class MenuState extends ChangeNotifier {
   int productCount = 0;
   MenuItems _menuItems = MenuItems();
 
+  final categoryOrder = [
+    'promo',
+    'makanan',
+    'minuman',
+    'snack',
+    'dessert',
+    'lainnya'
+  ];
+
   Map<int, int> productCountList = {};
 
   MenuItems get menuItems => _menuItems;
@@ -25,15 +34,6 @@ class MenuState extends ChangeNotifier {
 
     List<MenuItem> menuItemsList =
         List<MenuItem>.from(data.map((item) => MenuItem.fromJson(item)));
-
-    const categoryOrder = [
-      'promo',
-      'makanan',
-      'minuman',
-      'snack',
-      'dessert',
-      'lainnya'
-    ];
 
     menuItemsList.sort((a, b) {
       int indexA = categoryOrder.indexOf(a.type.toLowerCase());

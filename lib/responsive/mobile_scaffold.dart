@@ -57,7 +57,7 @@ class _MobileScaffoldState extends State<MobileScaffold> {
                         _onMenuSelected(menuType, items?.data),
                   ),
                   const SizedBox(height: 16),
-                  items?.areHavePicture == false
+                  items?.areHavePicture == true
                       ? ProductCard(
                           onProductCountChanged: menuState.updateProductCount,
                           items: filteredItems ?? items?.data ?? [],
