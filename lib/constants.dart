@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'menu_state.dart';
 import 'model/menu_items.dart';
+import 'dart:html' as html;
 
 const supabaseUrl = 'https://jtxaomopwwaluvrgtajd.supabase.co';
 const supabaseKey =
@@ -85,6 +86,14 @@ Widget floatingActionButton(MenuState menuState, BuildContext context) {
     label: Text('${menuState.productCount}'),
     child: FloatingActionButton(
       onPressed: () {
+        if (menuState.productCount == 0) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Harap pilih menu terlebih dahulu'),
+            ),
+          );
+          return;
+        }
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -115,6 +124,7 @@ Widget floatingActionButton(MenuState menuState, BuildContext context) {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 2),
                             child: TextField(
+                              keyboardType: TextInputType.number,
                               controller: tableController,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
@@ -149,9 +159,21 @@ Widget floatingActionButton(MenuState menuState, BuildContext context) {
                     ),
                     GestureDetector(
                       onTap: () {
+                        if (nameController.text == '' &&
+                            tableController.text == '') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                  'Nama dan nomor meja tidak boleh kosong'),
+                            ),
+                          );
+                          return;
+                        }
+
                         sendToWhatsApp();
                         menuState.clearProductCount(context);
                         Navigator.pop(context);
+                        html.window.close();
                       },
                       child: Container(
                         margin: const EdgeInsets.symmetric(vertical: 16),
