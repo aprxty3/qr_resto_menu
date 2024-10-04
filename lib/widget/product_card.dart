@@ -66,7 +66,7 @@ class _ProductCardState extends State<ProductCard> {
                             ),
                             GridView.builder(
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               itemCount: entry.value.length,
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
