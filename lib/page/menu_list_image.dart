@@ -18,13 +18,9 @@ class _MenuListImageState extends State<MenuListImage> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveLayout(
-      mobileScaffold: MobileScaffold(
-        typeList: widget.argument,
-      ),
-      tabletScaffold: TabletScaffold(
-        typeList: widget.argument,
-      ),
-      desktopScaffold: const DesktopScaffold(),
+      mobileScaffold: MobileScaffold(typeList: widget.argument),
+      tabletScaffold: TabletScaffold(typeList: widget.argument),
+      desktopScaffold: DesktopScaffold(typeList: widget.argument),
     );
   }
 }

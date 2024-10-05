@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -43,8 +42,6 @@ class _TabletScaffoldState extends State<TabletScaffold> {
     return Consumer<MenuState>(
       builder: (context, menuState, child) {
         final items = menuState.menuItems.result;
-
-        log('Menu items: ${items?.toJson()}');
         return Visibility(
           visible: items != null,
           replacement: const Center(child: CircularProgressIndicator()),

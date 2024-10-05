@@ -20,7 +20,7 @@ class _MenuListState extends State<MenuList> {
     return ResponsiveLayout(
       mobileScaffold: MobileScaffold(typeList: widget.argument),
       tabletScaffold: TabletScaffold(typeList: widget.argument),
-      desktopScaffold: const DesktopScaffold(),
+      desktopScaffold: DesktopScaffold(typeList: widget.argument),
     );
   }
 }

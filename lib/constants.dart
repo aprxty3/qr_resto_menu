@@ -1,10 +1,13 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'menu_state.dart';
 import 'model/menu_items.dart';
+
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 
 const supabaseUrl = 'https://jtxaomopwwaluvrgtajd.supabase.co';
@@ -47,12 +50,15 @@ Widget myDrawer(BuildContext context, Function(String) onMenuSelected) {
           ),
         ),
         ...titleMenu.map(
-              (menu) => ListTile(
+          (menu) => ListTile(
             title: Text(menu['titleMenu'].toString()),
             leading: Icon(menu['iconMenu'] as IconData),
             onTap: () {
               onMenuSelected(menu['titleMenu'].toString());
-              Navigator.of(context).pop(); // Close the drawer
+
+              if (Platform.isAndroid || Platform.isIOS) {
+                Navigator.of(context).pop();
+              }
             },
           ),
         ),
