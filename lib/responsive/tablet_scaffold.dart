@@ -51,7 +51,7 @@ class _TabletScaffoldState extends State<TabletScaffold> {
           child: Scaffold(
             backgroundColor: myBackground,
             appBar: myAppbar,
-            drawer: myDrawer,
+            drawer: myDrawer(context, (menuType) => _onMenuSelected(menuType, items?.data)),
             floatingActionButton: floatingActionButton(menuState, context),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),

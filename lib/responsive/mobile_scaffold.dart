@@ -10,6 +10,7 @@ import '../widget/parent_title_menu.dart';
 
 class MobileScaffold extends StatefulWidget {
   final String typeList;
+
   const MobileScaffold({super.key, required this.typeList});
 
   @override
@@ -47,7 +48,8 @@ class _MobileScaffoldState extends State<MobileScaffold> {
           child: Scaffold(
             backgroundColor: myBackground,
             appBar: myAppbar,
-            drawer: myDrawer,
+            drawer: myDrawer(
+                context, (menuType) => _onMenuSelected(menuType, items?.data)),
             floatingActionButton: floatingActionButton(menuState, context),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),

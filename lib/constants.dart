@@ -35,25 +35,31 @@ final myAppbar = AppBar(
   ),
 );
 
-final myDrawer = Drawer(
-  backgroundColor: Colors.grey[300],
-  child: Column(
-    children: [
-      const DrawerHeader(
-        child: Text(
-          'RestoMoe',
-          style: TextStyle(fontSize: 24),
+Widget myDrawer(BuildContext context, Function(String) onMenuSelected) {
+  return Drawer(
+    backgroundColor: Colors.grey[300],
+    child: Column(
+      children: [
+        const DrawerHeader(
+          child: Text(
+            'RestoMoe',
+            style: TextStyle(fontSize: 24),
+          ),
         ),
-      ),
-      ...titleMenu.map(
-        (menu) => ListTile(
-          title: Text(menu['titleMenu'].toString()),
-          leading: Icon(menu['iconMenu'] as IconData),
+        ...titleMenu.map(
+              (menu) => ListTile(
+            title: Text(menu['titleMenu'].toString()),
+            leading: Icon(menu['iconMenu'] as IconData),
+            onTap: () {
+              onMenuSelected(menu['titleMenu'].toString());
+              Navigator.of(context).pop(); // Close the drawer
+            },
+          ),
         ),
-      ),
-    ],
-  ),
-);
+      ],
+    ),
+  );
+}
 
 Widget floatingActionButton(MenuState menuState, BuildContext context) {
   TextEditingController nameController = TextEditingController();
